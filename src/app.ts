@@ -1,9 +1,16 @@
 import express, { Request, Response } from "express"
-
+import sharp from "sharp"
 const app = express()
 
-app.get("/", (req: Request, res: Response) => {
-    res.send({data: "HELLO WORLD"})
+app.get("/", async (req: Request, res: Response) => {
+    const {w,h} = req.query
+    const unsplashURL = 'https://api.unsplash.com/random'
+    if(w&&h){
+        return res.redirect(`${unsplashURL}?w=${w}&h=${h}`)
+    }
+    else{
+        return res.redirect('https://api.unsplash.com/random')
+    }
     // res.redirect()
 
     // resize if width and height is specified
