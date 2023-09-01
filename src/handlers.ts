@@ -1,12 +1,15 @@
 import { Request, Response } from "express"
+import axios from "axios"
+import { globalConfig } from "./config"
+
+export async function getRandomUnsplashImageUrl(): Promise<string> {
+    const randomImageUrl = 
+        `${globalConfig.unsplash.apiBaseUrl}/photos/random?client_id=${globalConfig.unsplash.apiAccessKey}`
+    const { data } = await axios.get(randomImageUrl)
+    return data.urls.full
+}
 
 export async function getRandomImage(req: Request, res: Response)  {
-    const unsplashURL = 'https://api.unsplash.com/photos/random'
-    // fetch with access key
-    
-    const { w, h } = req.query
-    if(w && h){
-        return res.redirect(`${unsplashURL}?w=${w}&h=${h}`)
-    }
-    return res.redirect('https://api.unsplash.com/random')
+    const randomImageUrl = await getRandomUnsplashImageUrl()
+    res.redirect(randomImageUrl)
 }
