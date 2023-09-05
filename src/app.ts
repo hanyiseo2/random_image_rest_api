@@ -1,9 +1,9 @@
-import express from "express"
-import { getRandomImage,getRandomSearchImage } from "./handlers"
+import express from "express";
+import { getRandomImage, getRandomSearchImage } from "./handlers";
 
-const app = express()
+const app = express();
 
-app.get("/", getRandomImage)
-app.get("/search/:keyword", getRandomSearchImage)
+app.get("/", getRandomImage);
+app.get("/:keyword", getRandomSearchImage);
 
-export default app
+export default app;
