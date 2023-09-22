@@ -54,13 +54,16 @@ export function createUrlWithParams(url: string, params: object) {
   for (let i = 0; i < keys.length; i++) {
     const key = keys[i];
     if (params[key] === undefined) continue;
-    paramsStr += `${key}=${params[key]}`;
-    if (i < keys.length - 1) {
+    if (
+      (i == 0 && url.slice(-1)[0] !== "?") ||
+      paramsStr.slice(-1)[0] !== "&"
+    ) {
       paramsStr += "&";
     }
+    paramsStr += `${key}=${params[key]}`;
   }
   if (url.includes("?")) {
-    return url + "&" + paramsStr;
+    return url + paramsStr;
   }
   return url + "?" + paramsStr;
 }
