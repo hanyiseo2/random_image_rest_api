@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import {
   Color,
   getRandomUnsplashImageUrl,
-  getUnsplashSearchImageUrl,
+  getRandomUnsplashImageUrlBySearch,
   isColor,
 } from "./unsplash";
 
@@ -37,33 +37,11 @@ export async function getRandomSearchImage(req: Request, res: Response) {
   const { keyword } = req.params;
   const { width, height, color } = req.query;
 
-  const randomSearchImageUrl = await getUnsplashSearchImageUrl(
+  const randomSearchImageUrl = await getRandomUnsplashImageUrlBySearch(
     keyword,
     Number(width),
     Number(height),
     isColor(String(color)) ? (color as Color) : undefined
   );
   res.redirect(randomSearchImageUrl);
-}
-
-export function createUrlWithParams(url: string, params: object) {
-  if (Object.keys(params).length === 0) return url;
-
-  let paramsStr = "";
-  const keys = Object.keys(params);
-  for (let i = 0; i < keys.length; i++) {
-    const key = keys[i];
-    if (params[key] === undefined) continue;
-    if (
-      (i == 0 && url.slice(-1)[0] !== "?") ||
-      paramsStr.slice(-1)[0] !== "&"
-    ) {
-      paramsStr += "&";
-    }
-    paramsStr += `${key}=${params[key]}`;
-  }
-  if (url.includes("?")) {
-    return url + paramsStr;
-  }
-  return url + "?" + paramsStr;
 }
