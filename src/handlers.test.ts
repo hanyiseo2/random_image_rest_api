@@ -1,42 +1,16 @@
 import app from "./app";
 import request from "supertest";
 import nock from "nock";
+import { globalConfig } from "./config";
 
 import randomSuccessResponse_01 from "./testing_assets/json/random_success_01.json";
 import randomSuccessResponse_02 from "./testing_assets/json/random_success_02.json";
 
-/** 
- Cases to test
-
- 1. Successful cases
-    - Random image
-    - Random Search Image
-    - Width & Height
-
- 2. Error cases
-    400(Bad Request) - Wrong Parameter
-    - height=hello
-    - height=500000000
-    - height=-500000000
-    - width=hihi
-
-    - 
-    404(Not Found)
-    - /cat
-    - /cat/hello/hi/green/
-    
-4. Authentication
-    403(Unauthenticated)
- 5. Performance
-
-
- */
-
 describe("GET /", () => {
   it("must response with a random image", async () => {
     // mocking response from unsplash api
-    nock("http://localhost:1080")
-      .get("/photos/random?client_id=ACCESS_KEY_SAMPLE")
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(`/photos/random?client_id=${globalConfig.unsplash.apiAccessKey}`)
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
@@ -51,8 +25,8 @@ describe("GET /", () => {
 
   it("must response with a random image with size of 400X600", async () => {
     // mocking response from unsplash api
-    nock("http://localhost:1080")
-      .get("/photos/random?client_id=ACCESS_KEY_SAMPLE")
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(`/photos/random?client_id=${globalConfig.unsplash.apiAccessKey}`)
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
@@ -67,8 +41,8 @@ describe("GET /", () => {
 
   it("must response 400(Bad Request) when width is not a number", async () => {
     // mocking response from unsplash api
-    nock("http://localhost:1080")
-      .get("/photos/random?client_id=ACCESS_KEY_SAMPLE")
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(`/photos/random?client_id=${globalConfig.unsplash.apiAccessKey}`)
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
@@ -83,8 +57,8 @@ describe("GET /", () => {
 
   it("must response 400(Bad Request) when width is not in the range of number(w > 2000)", async () => {
     // mocking response from unsplash api
-    nock("http://localhost:1080")
-      .get("/photos/random?client_id=ACCESS_KEY_SAMPLE")
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(`/photos/random?client_id=${globalConfig.unsplash.apiAccessKey}`)
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
@@ -99,8 +73,8 @@ describe("GET /", () => {
 
   it("must response 400(Bad Request) when height is not in the range of number(h <= 0)", async () => {
     // mocking response from unsplash api
-    nock("http://localhost:1080")
-      .get("/photos/random?client_id=ACCESS_KEY_SAMPLE")
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(`/photos/random?client_id=${globalConfig.unsplash.apiAccessKey}`)
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
@@ -115,8 +89,8 @@ describe("GET /", () => {
 
   it("must response 400(Bad Request) when height is not a number", async () => {
     // mocking response from unsplash api
-    nock("http://localhost:1080")
-      .get("/photos/random?client_id=ACCESS_KEY_SAMPLE")
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(`/photos/random?client_id=${globalConfig.unsplash.apiAccessKey}`)
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
@@ -133,8 +107,10 @@ describe("GET /", () => {
 describe("GET /[query]", () => {
   it("must response with a random image with query", async () => {
     // mocking response from unsplash api
-    nock("http://localhost:1080")
-      .get("/search/photos?query=elephant&client_id=ACCESS_KEY_SAMPLE")
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(
+        `/search/photos?query=elephant&client_id=${globalConfig.unsplash.apiAccessKey}`
+      )
       .reply(200, randomSuccessResponse_02);
 
     // request and getting response from the app
@@ -144,6 +120,24 @@ describe("GET /[query]", () => {
     // Testing on redirect url
     expect(response.header.location).toEqual(
       "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w0OTU5Mzh8MHwxfHNlYXJjaHwxfHxlbGVwaGFudHxlbnwwfHx8fDE2OTUyMDU4MzJ8MA&ixlib=rb-4.0.3&q=85"
+    );
+  });
+
+  it("must response with a random image with query", async () => {
+    // mocking response from unsplash api
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(
+        `/search/photos?query=elephant&client_id=${globalConfig.unsplash.apiAccessKey}`
+      )
+      .reply(200, randomSuccessResponse_02);
+
+    // request and getting response from the app
+    const response = await request(app).get("/elephant?width=400&height=800");
+    expect(response.status).toBe(302);
+
+    // Testing on redirect url
+    expect(response.header.location).toEqual(
+      "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w0OTU5Mzh8MHwxfHNlYXJjaHwxfHxlbGVwaGFudHxlbnwwfHx8fDE2OTUyMDU4MzJ8MA&ixlib=rb-4.0.3&q=85&w=400&h=800"
     );
   });
 });
