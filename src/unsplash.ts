@@ -31,9 +31,14 @@ export async function getUnsplashSearchImageUrl(
     color,
   });
 
-  const { data } = await axios.get(searchImageUrl);
-  let randomNumber = Math.floor(Math.random() * 10);
-  let url = data.results[randomNumber].urls.full;
+  const response = await axios.get(searchImageUrl);
+  const data = response.data;
+  const results = data.randomSearchImageUrl.results;
+
+  // Lets consider the first image url to be most relevant result(for consistency in testing)
+  // let randomNumber = Math.floor(Math.random() * results.length);
+  // let url = results[randomNumber].urls.full;
+  let url = results[0].urls.full;
   let params: any = {};
   if (!isNaN(width)) params.w = width;
   if (!isNaN(height)) params.h = height;

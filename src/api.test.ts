@@ -143,7 +143,7 @@ describe("GET /[query]", () => {
 
     // Testing on redirect url
     expect(response.header.location).toEqual(
-      "https://images.unsplash.com/photo-1692278265511-7c884556cd74?crop=entropy&cs=srgb&fm=jpg&ixid=M3w0OTU5Mzh8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTUxMTYxNzh8&ixlib=rb-4.0.3&q=85"
+      "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w0OTU5Mzh8MHwxfHNlYXJjaHwxfHxlbGVwaGFudHxlbnwwfHx8fDE2OTUyMDU4MzJ8MA&ixlib=rb-4.0.3&q=85"
     );
   });
 });
