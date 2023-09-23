@@ -1,6 +1,6 @@
 import axios from "axios";
 import { globalConfig } from "./config";
-import { createUrlWithParams } from "./util";
+import { createUrlWithParams, createWidthHeightObejct } from "./util";
 
 export async function getRandomUnsplashImageUrl(
   width: number,
@@ -10,9 +10,7 @@ export async function getRandomUnsplashImageUrl(
   const { data } = await axios.get(randomImageUrl);
   let url = data.urls.full;
 
-  let params: any = {};
-  if (!isNaN(width)) params.w = width;
-  if (!isNaN(height)) params.h = height;
+  const params = createWidthHeightObejct(width, height);
 
   const imageUrl = createUrlWithParams(url, params);
   return imageUrl;
@@ -36,9 +34,7 @@ export async function getRandomUnsplashImageUrlBySearch(
 
   // Lets consider the first image url to be most relevant result(for consistency in testing)
   let url = results[0].urls.full;
-  let params: any = {};
-  if (!isNaN(width)) params.w = width;
-  if (!isNaN(height)) params.h = height;
+  const params = createWidthHeightObejct(width, height);
 
   const imageUrl = createUrlWithParams(url, params);
   return imageUrl;

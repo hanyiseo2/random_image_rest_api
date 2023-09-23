@@ -33,3 +33,11 @@ export function isNumberInRange(width: number, height: number) {
   if (Number(width) <= min || Number(height) <= min)
     return "The value of width and height should be bigger than 0";
 }
+
+export function createWidthHeightObejct(width: number, height: number) {
+  let params: any = {};
+  if (!isNaN(width)) params.w = width;
+  if (!isNaN(height)) params.h = height;
+
+  return params;
+}
