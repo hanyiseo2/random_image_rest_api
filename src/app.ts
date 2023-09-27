@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import { getRandomImage, getRandomSearchImage } from "./handlers";
-import { ServerError } from "./error";
+import { ClientError } from "./error";
 import morgan from "morgan";
 
 import { init } from "./config";
@@ -13,7 +13,7 @@ app.use(morgan("dev"));
 app.get("/", getRandomImage);
 app.get("/:keyword", getRandomSearchImage);
 
-app.use((err: ServerError, req: Request, res: Response, next: NextFunction) => {
+app.use((err: ClientError, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status).json({ message: err.message });
 });
 

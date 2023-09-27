@@ -5,7 +5,7 @@ import {
 } from "./unsplash";
 
 import { isNumberInRange } from "./util";
-import { ServerError } from "./error";
+import { ClientError } from "./error";
 
 export async function getRandomImage(
   req: Request,
@@ -16,14 +16,14 @@ export async function getRandomImage(
   const height = req.query.height;
 
   if ((width && isNaN(Number(width))) || (height && isNaN(Number(height)))) {
-    return next(new ServerError(400, "width and height must be a number"));
+    return next(new ClientError(400, "width and height must be a number"));
   }
   if (
     (width && !isNumberInRange(Number(width), 1, 2000)) ||
     (height && !isNumberInRange(Number(height), 1, 2000))
   ) {
     return next(
-      new ServerError(
+      new ClientError(
         400,
         "width and height must be a number between 1 and 2000"
       )
@@ -48,14 +48,14 @@ export async function getRandomSearchImage(
   const height = req.query.height;
 
   if ((width && isNaN(Number(width))) || (height && isNaN(Number(height)))) {
-    return next(new ServerError(400, "width and height must be a number"));
+    return next(new ClientError(400, "width and height must be a number"));
   }
   if (
     (width && !isNumberInRange(Number(width), 1, 2000)) ||
     (height && !isNumberInRange(Number(height), 1, 2000))
   ) {
     return next(
-      new ServerError(
+      new ClientError(
         400,
         "width and height must be a number between 1 and 2000"
       )
