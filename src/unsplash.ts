@@ -2,17 +2,23 @@ import axios from "axios";
 import { globalConfig } from "./config";
 import { createUrlWithParams, createWidthHeightObejct } from "./util";
 
+type UnsplashImageOptions = {
+  width?: number;
+  height?: number;
+};
+
 export async function getRandomUnsplashImageUrl(
-  width: number,
-  height: number
+  options: UnsplashImageOptions = {}
 ): Promise<string> {
   const randomImageUrl = `${globalConfig.unsplash.apiBaseUrl}/photos/random?client_id=${globalConfig.unsplash.apiAccessKey}`;
   const { data } = await axios.get(randomImageUrl);
   let url = data.urls.full;
 
-  const params = createWidthHeightObejct(width, height);
+  const imageUrl = createUrlWithParams(url, {
+    w: options.width,
+    h: options.height,
+  });
 
-  const imageUrl = createUrlWithParams(url, params);
   return imageUrl;
 }
 
