@@ -24,7 +24,11 @@ export function createUrlWithParams(url: string, params: object) {
   return (
     urlBase +
     "?" +
-    (existingParamStr ? existingParamStr + "&" : "") +
+    (existingParamStr
+      ? paramsList.length > 0
+        ? existingParamStr + "&"
+        : existingParamStr
+      : "") +
     paramsList.join("&")
   );
 }

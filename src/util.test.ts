@@ -26,4 +26,12 @@ describe("createUrlWithParams", () => {
     });
     expect(url).toBe("https://www.google.com?width=400&color=green");
   });
+  it("must correctly parse params into url if all params are undefined", () => {
+    // https://www.google.com?crop=entropy&q=85
+    const url = createUrlWithParams(
+      "https://www.google.com?crop=entropy&q=85",
+      { w: undefined, h: undefined }
+    );
+    expect(url).toBe("https://www.google.com?crop=entropy&q=85");
+  });
 });
