@@ -43,11 +43,3 @@ export function createUrlWithParams(url: string, params: object) {
 export function isNumberInRange(n: number, min: number, max: number): boolean {
   return n >= min && n <= max;
 }
-
-export function createWidthHeightObejct(width: number, height: number) {
-  let params: any = {};
-  if (!isNaN(width)) params.w = width;
-  if (!isNaN(height)) params.h = height;
-
-  return params;
-}
