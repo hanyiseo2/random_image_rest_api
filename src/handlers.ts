@@ -1,36 +1,73 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import {
-  Color,
   getRandomUnsplashImageUrl,
   getRandomUnsplashImageUrlBySearch,
-  isColor,
 } from "./unsplash";
 
 import { isNumberInRange } from "./util";
+import { ClientError } from "./error";
 
-export async function getRandomImage(req: Request, res: Response) {
-  const { width, height } = req.query;
-  if (width && height) {
-    const validationError = isNumberInRange(Number(width), Number(height));
-    if (validationError) return res.status(400).json(validationError);
+export async function getRandomImage(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const width = req.query.width;
+  const height = req.query.height;
+
+  if ((width && isNaN(Number(width))) || (height && isNaN(Number(height)))) {
+    return next(new ClientError(400, "width and height must be a number"));
+  }
+  if (
+    (width && !isNumberInRange(Number(width), 1, 2000)) ||
+    (height && !isNumberInRange(Number(height), 1, 2000))
+  ) {
+    return next(
+      new ClientError(
+        400,
+        "width and height must be a number between 1 and 2000"
+      )
+    );
   }
 
-  const randomImageUrl = await getRandomUnsplashImageUrl(
-    Number(width),
-    Number(height)
-  );
+  const randomImageUrl = await getRandomUnsplashImageUrl({
+    width: width ? Number(width) : undefined,
+    height: height ? Number(height) : undefined,
+  });
+
   res.redirect(randomImageUrl);
 }
 
-export async function getRandomSearchImage(req: Request, res: Response) {
-  const { keyword } = req.params;
-  const { width, height, color } = req.query;
+export async function getRandomSearchImage(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const keyword = req.params.keyword;
+  const width = req.query.width;
+  const height = req.query.height;
+
+  if ((width && isNaN(Number(width))) || (height && isNaN(Number(height)))) {
+    return next(new ClientError(400, "width and height must be a number"));
+  }
+  if (
+    (width && !isNumberInRange(Number(width), 1, 2000)) ||
+    (height && !isNumberInRange(Number(height), 1, 2000))
+  ) {
+    return next(
+      new ClientError(
+        400,
+        "width and height must be a number between 1 and 2000"
+      )
+    );
+  }
 
   const randomSearchImageUrl = await getRandomUnsplashImageUrlBySearch(
     keyword,
-    Number(width),
-    Number(height),
-    isColor(String(color)) ? (color as Color) : undefined
+    {
+      width: width ? Number(width) : undefined,
+      height: height ? Number(height) : undefined,
+    }
   );
   res.redirect(randomSearchImageUrl);
 }

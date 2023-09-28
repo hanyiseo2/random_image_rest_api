@@ -50,9 +50,9 @@ describe("GET /", () => {
     expect(response.status).toBe(400);
 
     // Testing on redirect url
-    expect(response.text).toEqual(
-      '"The value of width and height should be a number"'
-    );
+    expect(JSON.parse(response.text)).toEqual({
+      message: "width and height must be a number",
+    });
   });
 
   it("must response 400(Bad Request) when width is not in the range of number(w > 2000)", async () => {
@@ -66,9 +66,9 @@ describe("GET /", () => {
     expect(response.status).toBe(400);
 
     // Testing on redirect url
-    expect(response.text).toEqual(
-      '"The value of width and height should be smaller than 2000"'
-    );
+    expect(JSON.parse(response.text)).toEqual({
+      message: "width and height must be a number between 1 and 2000",
+    });
   });
 
   it("must response 400(Bad Request) when height is not in the range of number(h <= 0)", async () => {
@@ -82,9 +82,9 @@ describe("GET /", () => {
     expect(response.status).toBe(400);
 
     // Testing on redirect url
-    expect(response.text).toEqual(
-      '"The value of width and height should be bigger than 0"'
-    );
+    expect(JSON.parse(response.text)).toEqual({
+      message: "width and height must be a number between 1 and 2000",
+    });
   });
 
   it("must response 400(Bad Request) when height is not a number", async () => {
@@ -98,9 +98,9 @@ describe("GET /", () => {
     expect(response.status).toBe(400);
 
     // Testing on redirect url
-    expect(response.text).toEqual(
-      '"The value of width and height should be a number"'
-    );
+    expect(JSON.parse(response.text)).toEqual({
+      message: "width and height must be a number",
+    });
   });
 });
 
@@ -139,5 +139,41 @@ describe("GET /[query]", () => {
     expect(response.header.location).toEqual(
       "https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?crop=entropy&cs=srgb&fm=jpg&ixid=M3w0OTU5Mzh8MHwxfHNlYXJjaHwxfHxlbGVwaGFudHxlbnwwfHx8fDE2OTUyMDU4MzJ8MA&ixlib=rb-4.0.3&q=85&w=400&h=800"
     );
+  });
+
+  it("must response 400(Bad Request) when height is not a number", async () => {
+    // mocking response from unsplash api
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(
+        `/search/photos?query=elephant&client_id=${globalConfig.unsplash.apiAccessKey}`
+      )
+      .reply(200, randomSuccessResponse_02);
+
+    // request and getting response from the app
+    const response = await request(app).get("/elephant?width=400&height=hello");
+    expect(response.status).toBe(400);
+
+    // Testing on redirect url
+    expect(JSON.parse(response.text)).toEqual({
+      message: "width and height must be a number",
+    });
+  });
+
+  it("must response 400(Bad Request) when height is not in the range of number(h <= 0)", async () => {
+    // mocking response from unsplash api
+    nock(globalConfig.unsplash.apiBaseUrl)
+      .get(
+        `/search/photos?query=elephant&client_id=${globalConfig.unsplash.apiAccessKey}`
+      )
+      .reply(200, randomSuccessResponse_02);
+
+    // request and getting response from the app
+    const response = await request(app).get("/elephant?width=-200&height=300");
+    expect(response.status).toBe(400);
+
+    // Testing on redirect url
+    expect(JSON.parse(response.text)).toEqual({
+      message: "width and height must be a number between 1 and 2000",
+    });
   });
 });
