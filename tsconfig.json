@@ -2,8 +2,12 @@
     "compilerOptions": {
         "target": "ES6",
         "moduleResolution": "node",
+        "outDir": "dist",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "resolveJsonModule": true
-    }
+    },
+    "exclude": [
+        "node_modules"
+    ]
 }
