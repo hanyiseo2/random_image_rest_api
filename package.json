@@ -4,8 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "npx nodemon --exec 'NODE_ENV=local ts-node src/index.ts' -w src -e ts",
-    "test": "NODE_ENV=test jest"
+    "dev": "npx nodemon --exec 'NODE_ENV=local ts-node index.ts' -w src -w index.ts -e ts",
+    "test": "NODE_ENV=test jest",
+    "server": "ts-node index.ts"
   },
   "author": "",
   "license": "ISC",
