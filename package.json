@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "npx nodemon --exec 'NODE_ENV=local ts-node index.ts' -w src -w index.ts -e ts",
     "test": "NODE_ENV=test jest",
-    "server": "node index.js",
+    "server": "ts-node index.ts",
     "build": "tsc"
   },
   "author": "",
