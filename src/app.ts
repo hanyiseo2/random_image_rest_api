@@ -24,10 +24,9 @@ const swaggerOptions = {
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);
 
-app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 app.use(morgan("dev"));
-
 app.use("/random", router);
+app.use("/", swaggerUI.serve, swaggerUI.setup(swaggerSpec));
 
 app.use((err: ClientError, req: Request, res: Response, next: NextFunction) => {
   res.status(err.status).json({ message: err.message });
