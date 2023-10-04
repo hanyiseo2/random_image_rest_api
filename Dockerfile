@@ -1,3 +1,16 @@
+# Testing
+FROM node:18 AS test
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run test
+
 # BUILD
 FROM node:18 AS build
 
