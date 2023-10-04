@@ -1,15 +1,15 @@
 # BUILD
-# FROM node:18 AS build
+FROM node:18 AS build
 
-# WORKDIR /app
+WORKDIR /app
 
-# COPY package*.json ./
+COPY package*.json ./
 
-# RUN npm install
+RUN npm install
 
-# COPY . .
+COPY . .
 
-# RUN npm run build
+RUN npm run build
 
 
 # RUNNING SERVER
@@ -21,7 +21,7 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY --from=build /app/dist ./dist
 
 EXPOSE 8080
 
