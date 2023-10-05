@@ -6,7 +6,7 @@ import { globalConfig } from "./config";
 import randomSuccessResponse_01 from "./testing_assets/json/random_success_01.json";
 import randomSuccessResponse_02 from "./testing_assets/json/random_success_02.json";
 
-describe("GET /", () => {
+describe("GET /random", () => {
   it("must response with a random image", async () => {
     // mocking response from unsplash api
     nock(globalConfig.unsplash.apiBaseUrl)
@@ -14,7 +14,7 @@ describe("GET /", () => {
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
-    const response = await request(app).get("/");
+    const response = await request(app).get("/random");
     expect(response.status).toBe(302);
 
     // Testing on redirect url
@@ -30,7 +30,7 @@ describe("GET /", () => {
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
-    const response = await request(app).get("/?width=400&height=600");
+    const response = await request(app).get("/random?width=400&height=600");
     expect(response.status).toBe(302);
 
     // Testing on redirect url
@@ -46,7 +46,7 @@ describe("GET /", () => {
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
-    const response = await request(app).get("/?width=hihi&height=600");
+    const response = await request(app).get("/random?width=hihi&height=600");
     expect(response.status).toBe(400);
 
     // Testing on redirect url
@@ -62,7 +62,7 @@ describe("GET /", () => {
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
-    const response = await request(app).get("/?width=3000&height=600");
+    const response = await request(app).get("/random?width=3000&height=600");
     expect(response.status).toBe(400);
 
     // Testing on redirect url
@@ -78,7 +78,7 @@ describe("GET /", () => {
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
-    const response = await request(app).get("/?width=1000&height=-200");
+    const response = await request(app).get("/random?width=1000&height=-200");
     expect(response.status).toBe(400);
 
     // Testing on redirect url
@@ -94,7 +94,7 @@ describe("GET /", () => {
       .reply(200, randomSuccessResponse_01);
 
     // request and getting response from the app
-    const response = await request(app).get("/?width=400&height=hello");
+    const response = await request(app).get("/random?width=400&height=hello");
     expect(response.status).toBe(400);
 
     // Testing on redirect url
@@ -104,8 +104,8 @@ describe("GET /", () => {
   });
 });
 
-describe("GET /[query]", () => {
-  it("must response with a random image with query", async () => {
+describe("GET /search/[keyword]", () => {
+  it("must response with a random image with keyword", async () => {
     // mocking response from unsplash api
     nock(globalConfig.unsplash.apiBaseUrl)
       .get(
@@ -114,7 +114,7 @@ describe("GET /[query]", () => {
       .reply(200, randomSuccessResponse_02);
 
     // request and getting response from the app
-    const response = await request(app).get("/elephant");
+    const response = await request(app).get("/search/elephant");
     expect(response.status).toBe(302);
 
     // Testing on redirect url
@@ -123,7 +123,7 @@ describe("GET /[query]", () => {
     );
   });
 
-  it("must response with a random image with query", async () => {
+  it("must response with a random image with keyword", async () => {
     // mocking response from unsplash api
     nock(globalConfig.unsplash.apiBaseUrl)
       .get(
@@ -132,7 +132,9 @@ describe("GET /[query]", () => {
       .reply(200, randomSuccessResponse_02);
 
     // request and getting response from the app
-    const response = await request(app).get("/elephant?width=400&height=800");
+    const response = await request(app).get(
+      "/search/elephant?width=400&height=800"
+    );
     expect(response.status).toBe(302);
 
     // Testing on redirect url
@@ -150,7 +152,9 @@ describe("GET /[query]", () => {
       .reply(200, randomSuccessResponse_02);
 
     // request and getting response from the app
-    const response = await request(app).get("/elephant?width=400&height=hello");
+    const response = await request(app).get(
+      "/search/elephant?width=400&height=hello"
+    );
     expect(response.status).toBe(400);
 
     // Testing on redirect url
@@ -168,7 +172,9 @@ describe("GET /[query]", () => {
       .reply(200, randomSuccessResponse_02);
 
     // request and getting response from the app
-    const response = await request(app).get("/elephant?width=-200&height=300");
+    const response = await request(app).get(
+      "/search/elephant?width=-200&height=300"
+    );
     expect(response.status).toBe(400);
 
     // Testing on redirect url
