@@ -10,7 +10,7 @@ const swaggerOptions = {
     },
     basePath: "/",
   },
-  apis: ["src/handlers.ts"],
+  apis: ["src/handlers.ts", "dist/src/handler.js"],
 };
 
 export const swaggerSpec = swaggerJSDoc(swaggerOptions);
