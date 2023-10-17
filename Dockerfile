@@ -10,7 +10,7 @@ RUN npm run test && npm run build
 FROM node:18
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN npm install --only=production
 COPY --from=build /app/dist ./dist
 EXPOSE 8080
 CMD ["npm", "run", "server"]
