@@ -4,7 +4,7 @@
 
 ### Development
 
-베포 서버: [https://random-image-rest-api-6id3udqf7q-df.a.run.app](https://random-image-rest-api-6id3udqf7q-df.a.run.app/)
+Deployment server: [https://random-image-rest-api-6id3udqf7q-df.a.run.app](https://random-image-rest-api-6id3udqf7q-df.a.run.app/)
 
 ### Description of random_image_api
 
